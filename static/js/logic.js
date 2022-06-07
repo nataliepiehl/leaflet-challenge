@@ -53,5 +53,10 @@ d3.json(query_url, function(data) {
                 };
             return L.circleMarker(latlng, geojsonMarkerOptions);
         },
+
+        // Create popups
+        onEachFeature: function (feature, layer) {
+            return layer.bindPopup(`<strong>Place:</strong> ${feature.properties.place}<br><strong>Magnitude:</strong> ${feature.properties.mag}`);
+        }
     });
 })
