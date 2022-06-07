@@ -59,4 +59,35 @@ d3.json(query_url, function(data) {
             return layer.bindPopup(`<strong>Place:</strong> ${feature.properties.place}<br><strong>Magnitude:</strong> ${feature.properties.mag}`);
         }
     });
+
+    // Define the legend
+    var legend = L.control({ position: "bottomright" });
+    legend.onAdd = function() {
+        // Define variables
+        var div = L.DomUtil.create("div", "info legend");
+        var limits = ["0-1", "1-2", "2-3", "3-4", "4-5", "5+"];
+        var labels_color = [];
+        var labels_text = [];
+
+        // Add min & max
+        limits.forEach(function(limit, index) {
+            labels_color.push(`<li style="background-color: ${colors[index]};"></li>`);
+            labels_text.push(`<span class="legend-label">${limits[index]}</span>`)
+        });
+
+        // Add color and text
+        var labels_color_html =  "<ul>" + labels_color.join("") + "</ul>";
+        var labels_text_html = `<div id="labels-text">${labels_text.join("<br>")}</div>`;
+
+        // Add legend info
+        var legend_info = "<h4>Earthquake<br>Magnitude</h4>" +
+            "<div class=\"labels\">" + labels_color_html + labels_text_html
+            "</div>";
+        div.innerHTML = legend_info;
+
+        return div;
+    };
+
+    // Adding legend to the map
+    legend.addTo(map);
 })
